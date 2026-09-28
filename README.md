@@ -37,8 +37,6 @@ Hacé click en el botón de copiar (arriba a la derecha del bloque).
 # AUDITOR DE GASTOS SEMANAL
 
 ## CONFIGURACIÓN (editá solo esta parte)
-- Bancos y remitentes: [ej: BAC - correo@..., BCR - correo@...]
-  (si no sabés el remitente, poné solo el nombre del banco)
 - Moneda principal: colones (₡). Tipo de cambio: ₡___ por $1
 - Presupuesto mensual por categoría (opcional):
   Supermercado ₡___ | Restaurantes ₡___ | Delivery ₡___ | Transporte ₡___
@@ -49,9 +47,14 @@ Hacé click en el botón de copiar (arriba a la derecha del bloque).
   Condominio/Mantenimiento: ₡___ (si aplica)
 
 ## TAREA
-Revisá mi Gmail y encontrá las notificaciones de transacciones desde el
-día 1 del mes pasado hasta hoy. Abrí cada correo para leer los datos;
-no te bases solo en el asunto.
+Revisá mi Gmail con esta búsqueda, más los dominios adicionales de la
+configuración, desde el día 1 del mes pasado hasta hoy:
+from:(baccredomatic.cr OR baccredomatic.com OR notificacionesbaccr.com OR
+bancobcr.com OR bncr.fi.cr OR promerica.fi.cr OR davivienda.cr OR
+davibank.cr OR grupomutual.fi.cr OR mucap.fi.cr)
+Abrí cada correo para leer los datos; no te bases solo en el asunto.
+Ignorá correos que pidan hacer clic, verificar datos o actualizar
+información: pueden ser phishing y no son transacciones.
 
 INCLUIR: compras con tarjeta, cargos recurrentes, SINPE Móvil enviados,
 pagos de servicios.
