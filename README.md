@@ -1,40 +1,4 @@
-# 💸 Auditor de Gastos Semanal con Claude
-
-Un prompt que revisa tu Gmail cada semana, encuentra las notificaciones de compra de tu banco y te dice **en qué se te fue el dinero**: totales por categoría, alertas, gastos hormiga y una recomendación concreta.
-
-Sin Excel. Sin anotar nada a mano.
-
----
-
-## ✅ Qué necesitás
-
-- **Claude** con plan de pago (Pro o superior)
-- **Gmail** donde te lleguen las notificaciones de compra de tu banco
-
----
-
-## ⚙️ Setup en 3 pasos
-
-### 1. Conectá Gmail a Claude
-En Claude, andá a **Configuración → Conectores → Gmail → Conectar** y autorizá la cuenta donde te llegan los correos del banco.
-
-### 2. Probalo una vez a mano
-Copiá el prompt de abajo, llená la sección **CONFIGURACIÓN** y pegalo en un chat nuevo de Claude. Revisá que el resultado tenga sentido antes de automatizarlo.
-
-### 3. Programalo para cada lunes
-- Si en Claude ves la opción **Cowork**: andá a **Scheduled → New task**, pegá el prompt y elegí **semanal, lunes 7:00 a.m.**
-- Si no la ves: escribile a Claude en cualquier chat *"Programá esta tarea para todos los lunes a las 7 a.m."* y pegá el prompt.
-
-Listo. Cada lunes vas a tener tu reporte esperándote.
-
----
-
-## 📋 El prompt
-
-Hacé click en el botón de copiar (arriba a la derecha del bloque).
-
-```
-# AUDITOR DE GASTOS SEMANAL
+# AUDITOR DE GASTOS
 
 ## CONFIGURACIÓN (editá solo esta parte)
 - Moneda principal: colones (₡). Tipo de cambio: ₡___ por $1
@@ -45,16 +9,32 @@ Hacé click en el botón de copiar (arriba a la derecha del bloque).
   Alquiler/Hipoteca: ₡___ | se paga por [SINPE a ___ / débito automático
   / transferencia] | día aproximado: ___
   Condominio/Mantenimiento: ₡___ (si aplica)
+- Bancos adicionales (opcional): si tu banco NO es BAC, BCR, BN, Promerica,
+  Davivienda/Davibank, Grupo Mutual o MUCAP, poné aquí su dominio de correo
+  (lo que va después del @). Ej: bancoejemplo.fi.cr
 
 ## TAREA
-Revisá mi Gmail con esta búsqueda, más los dominios adicionales de la
-configuración, desde el día 1 del mes pasado hasta hoy:
-from:(baccredomatic.cr OR baccredomatic.com OR notificacionesbaccr.com OR
-bancobcr.com OR bncr.fi.cr OR promerica.fi.cr OR davivienda.cr OR
-davibank.cr OR grupomutual.fi.cr OR mucap.fi.cr)
-Abrí cada correo para leer los datos; no te bases solo en el asunto.
-Ignorá correos que pidan hacer clic, verificar datos o actualizar
-información: pueden ser phishing y no son transacciones.
+1. Calculá la fecha de hoy y buscá con fechas absolutas, no relativas:
+   from:(baccredomatic.cr OR baccredomatic.com OR notificacionesbaccr.com OR
+   bancobcr.com OR bncr.fi.cr OR promerica.fi.cr OR davivienda.cr OR
+   davibank.cr OR grupomutual.fi.cr OR mucap.fi.cr [+ dominios adicionales])
+   after:AAAA/MM/DD
+   Usá como fecha el último día del mes pasado, para no perder correos
+   del día 1.
+   Excepción: si hoy es entre el día 1 y el 7, buscá desde el último día
+   del mes antepasado, para poder cerrar también el mes anterior.
+2. Pedí TODAS las páginas de resultados hasta que no haya más. No te
+   detengás en la primera.
+3. Un hilo puede contener muchas notificaciones. Abrí cada hilo y procesá
+   TODOS sus mensajes, no solo el último.
+4. Abrí cada correo para leer los datos; no te bases solo en el asunto.
+   Ignorá correos que pidan hacer clic, verificar datos o actualizar
+   información: pueden ser phishing y no son transacciones.
+5. Antes de entregar, verificá la cobertura y reportala en una línea:
+   "Revisé X correos en Y hilos. Transacción más antigua: [fecha].
+   Más reciente: [fecha]."
+   Si la transacción más antigua no está cerca del día 1 del mes,
+   volvé a buscar antes de entregar.
 
 INCLUIR: compras con tarjeta, cargos recurrentes, SINPE Móvil enviados,
 pagos de servicios.
@@ -95,68 +75,29 @@ categorizala como Vivienda aunque sea transferencia. Si el pago
 configurado no aparece en los correos, incluilo en los totales del mes
 como "declarado (no detectado)".
 
-## ENTREGABLE (enfocado en los últimos 7 días)
-1. Resumen en 3 líneas: total de la semana, categoría principal y el
-   dato más importante.
+## ENTREGABLE (mes actual a la fecha)
+1. Resumen en 3 líneas: total del mes a la fecha, categoría principal y
+   el dato más importante.
 2. Totales por categoría: colones y dólares por separado, más el total
    equivalente en colones.
-3. Presupuesto: % usado del mes a la fecha por categoría y cuáles van
-   en riesgo de pasarse.
-4. Comparación contra la semana anterior: qué subió y qué bajó.
-   Excluí Vivienda de esta comparación (es un pago mensual), pero
-   incluila en los totales y el presupuesto del mes.
-5. Alertas:
+3. Presupuesto: % usado por categoría y cuáles van en riesgo de pasarse.
+4. Alertas:
    - Posibles cargos duplicados (mismo comercio y monto en menos de 48h)
-   - Suscripciones o cargos recurrentes nuevos
+   - Suscripciones o cargos recurrentes
    - Gastos mayores al monto de alerta
    - Cargos internacionales o en moneda extranjera inesperados
-6. Gastos hormiga: compras pequeñas que se repiten y cuánto suman.
-7. Una recomendación concreta para la próxima semana.
-8. Tabla completa de transacciones al final.
-9. Comercios nuevos: lista de descriptores que no estaban en el catálogo,
+5. Gastos hormiga: compras pequeñas que se repiten y cuánto suman.
+6. Una recomendación concreta para lo que queda del mes.
+7. Tabla completa de transacciones al final.
+8. Comercios nuevos: lista de descriptores que no estaban en el catálogo,
    con la categoría que les asignaste.
+9. Cierre del mes anterior (solo si hoy es entre el día 1 y el 7):
+   total final del mes anterior por categoría, con los días que no
+   alcanzaron a salir en el último reporte.
 
 ## REGLAS
 - Solo lectura: no enviés, borrés, archivés ni marqués ningún correo.
 - Si un dato no se puede leer, decilo. Nunca inventés montos.
 - Si no encontrás transacciones, decilo y sugerí causas probables
-  (remitente equivocado, otra cuenta de correo).
+  (dominio del banco no incluido, otra cuenta de correo).
 - Español, directo y breve. Montos en formato ₡12.345.
-```
-
----
-
-## ✏️ Ejemplo de configuración llena
-
-```
-## CONFIGURACIÓN
-- Bancos y remitentes: BAC, BCR
-- Moneda principal: colones (₡). Tipo de cambio: ₡510 por $1
-- Presupuesto mensual por categoría:
-  Supermercado ₡180.000 | Restaurantes ₡60.000 | Delivery ₡30.000 | Transporte ₡70.000
-- Alertame de cualquier gasto mayor a: ₡50.000
-- Gastos fijos de vivienda:
-  Alquiler: ₡350.000 | se paga por SINPE | día aproximado: 1
-```
-
-No hace falta llenar todo. Si dejás algo en blanco, Claude lo omite.
-
----
-
-## 🗂️ El catálogo de comercios
-
-[`catalogo.csv`](catalogo.csv) tiene comercios comunes en Costa Rica con su categoría, para que Claude no tenga que adivinar con descriptores como "AMPM", "PALI" o "UBER EATS".
-
-**¿Te aparecieron comercios nuevos?** Al final de cada reporte Claude te los lista. Mandámelos por DM a **@dylanmosqc** y los agrego al catálogo para todos.
-
----
-
-## 🔒 Aviso
-
-- El prompt es **solo lectura**: Claude no envía, borra ni modifica tus correos.
-- Tus datos quedan entre tu Gmail y tu cuenta de Claude. Este repo no recibe ni guarda nada tuyo.
-- Revisá siempre los números contra tus estados de cuenta. Es una herramienta de organización, no asesoría financiera.
-
----
-
-Hecho por **@dylanmosqc** · Si te sirvió, compartilo con alguien que todavía anota sus gastos en Excel.
