@@ -1,17 +1,28 @@
 # AUDITOR DE GASTOS
 
-## CONFIGURACIÓN (editá solo esta parte)
-- Moneda principal: colones (₡). Tipo de cambio: ₡___ por $1
-- Presupuesto mensual por categoría (opcional):
-  Supermercado ₡___ | Restaurantes ₡___ | Delivery ₡___ | Transporte ₡___
-- Alertame de cualquier gasto mayor a: ₡50.000
-- Gastos fijos de vivienda (opcional):
-  Alquiler/Hipoteca: ₡___ | se paga por [SINPE a ___ / débito automático
-  / transferencia] | día aproximado: ___
-  Condominio/Mantenimiento: ₡___ (si aplica)
-- Bancos adicionales (opcional): si tu banco NO es BAC, BCR, BN, Promerica,
-  Davivienda/Davibank, Grupo Mutual o MUCAP, poné aquí su dominio de correo
-  (lo que va después del @). Ej: bancoejemplo.fi.cr
+Antes de empezar: ignorá las líneas que empiezan con //, son notas para
+la persona que llenó la configuración. Los campos vacíos o con ___ no
+aplican; omitilos. Los ejemplos de las notas no son datos reales.
+
+## CONFIGURACIÓN
+// Editá solo esta sección. Dejá en blanco lo que no aplique.
+
+- Moneda principal: colones (₡)
+- Tipo de cambio: ₡___ por $1
+- Presupuesto mensual por categoría:
+  Supermercado: ₡___
+  Restaurantes: ₡___
+  Delivery: ₡___
+  Transporte: ₡___
+// Opcional. Podés agregar otras categorías de la lista de abajo.
+- Alerta de gasto mayor a: ₡50.000
+- Alquiler/Hipoteca: ₡___ | forma de pago: ___ | día aproximado: ___
+// Forma de pago: SINPE a [nombre], débito automático o transferencia.
+- Condominio/Mantenimiento: ₡___
+- Bancos adicionales: ___
+// Solo si tu banco NO es BAC, BCR, BN, Promerica, Davivienda/Davibank,
+// Grupo Mutual o MUCAP. Poné el dominio del correo de tu banco (lo que
+// va después del @), por ejemplo: bancoejemplo.fi.cr
 
 ## TAREA
 1. Calculá la fecha de hoy y buscá con fechas absolutas, no relativas:
